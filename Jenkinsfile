@@ -1,10 +1,9 @@
-// Jenkinsfile - Phase 2
+// Jenkinsfile - Phase 2 (Corrected Host URL)
 pipeline {
     agent any
     tools {
-        // This 'SonarScanner' must match the name you set in Global Tool Configuration
         maven 'Maven' 
-        jdk 'JDK 11' // You'll need to configure this tool just like you did for Maven
+        jdk 'JDK 11' 
     }
     stages {
         stage('1. Checkout') {
@@ -19,11 +18,9 @@ pipeline {
         }
         stage('3. SonarQube Analysis (SAST)') {
             steps {
-                // 'SonarQube' must match the server name you set in Configure System
                 withSonarQubeEnv('SonarQube') {
-                    // This command runs the scanner
-                    // Note: I've updated this command from your guide to be more robust for Maven
-                    sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=my-jenkins-project -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_TOKEN'
+                    // *** THIS LINE IS NOW FIXED ***
+                    sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=my-jenkins-project -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.login=$SONAR_TOKEN'
                 }
             }
         }
